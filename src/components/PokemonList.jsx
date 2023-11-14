@@ -27,27 +27,6 @@ export const PokemonList = () => {
 				</div>
 			)}
 		</>
-  //   <>
-  //   {
-  //     loading ? (
-  //       <Loader/>
-  //     ):(
-  //       <div className="container">
-  //       <div className="card-list-pokemon">
-  //       <>
-  //          { 
-  //          filtrar?(
-  //           filteredPokemons.map(pokemon =>(<CardPokemon pokemon={pokemon} key={pokemon.id}/>))
-  //          (setfiltrar(!filtrar))
-  //           ):(
-  //          allpokemons.map(pokemon =>(<CardPokemon pokemon={pokemon} key={pokemon.id}/>))
-  //          )
-  //          } 
-  //          </>
-  //       </div>
-  //       </div>
-  //   )
-  // }
-  //   </>
+
   )
 }

@@ -32,7 +32,7 @@ export const PokemonProvider = ({ children }) => {
             setloading(false)
             sethiddenCargarMas(false)
         }catch(e){
-            e
+            console.log(e)
         }
         
     }

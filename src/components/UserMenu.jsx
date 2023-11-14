@@ -1,13 +1,17 @@
 import React, { useContext } from 'react'
 import { authContext } from '../context/AuthContext'
-export const UserMenu = ({email, setUserMenu}) => {
+import { Link } from 'react-router-dom'
+export const UserMenu = ({name,email, setUserMenu, image}) => {
     const {logout} = useContext(authContext)
   return (
     <div className='userMenu'>
-        <h3>{email}</h3>
-        <p>Juan Elias</p>
-        <a>Restablecer Contraseña</a>
-        <button onClick={()=>{logout();setUserMenu(false)}}>Logout</button>
+      <div className='userMenu_group'>
+        <img width={"38px"} src={image} alt="" />
+         <h3 className='userMenu_name'> {name}</h3>
+      </div>
+        <h4 className='userMenu_email'><b>Email:</b> {email}</h4>
+        <Link className='userMenu_favoritos' to={"/favoritos"}>Mis Favoritos</Link>
+        <button className='btn btn-login' onClick={()=>{logout();setUserMenu(false)}}>Logout</button>
     </div>
   )
 }

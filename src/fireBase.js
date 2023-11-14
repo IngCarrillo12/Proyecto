@@ -9,20 +9,21 @@ import {getAuth} from "firebase/auth"
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyClw98Knx1ocHvFWsTj_hJ5qtQT0XSB5AU",
-  authDomain: "pokedexmon-464c6.firebaseapp.com",
-  projectId: "pokedexmon-464c6",
-  storageBucket: "pokedexmon-464c6.appspot.com",
-  messagingSenderId: "736331360700",
-  appId: "1:736331360700:web:d84ec574a647b38df1a3b9",
-  measurementId: "G-7F8HEYW8YP"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const auth = getAuth(app)
-const db = getFirestore(app)
+export const db = getFirestore(app)
+
 export const MostrarFavoritos = async (id) => {
   const favoritosCollectionRef = collection(db, 'favoritos');
 
@@ -32,18 +33,28 @@ export const MostrarFavoritos = async (id) => {
   try {
     const querySnapshot = await getDocs(favoritosQuery);
 
-    const favoritosData = querySnapshot.docs.map((doc) => {
-      // Acceder a los datos de cada favorito
-      return doc.data();
-    });
+    if (querySnapshot.empty) {
+      // El usuario no tiene una colección de favoritos, así que la creamos
+      const newFavoritosData = {
+        userId: id,
+        pokemonsIds: [],
+      };
 
-    return favoritosData;
+      await setDoc(doc(db, 'favoritos', id), newFavoritosData);
+
+      // Devolvemos la nueva colección de favoritos creada
+      return newFavoritosData;
+    } else {
+      // El usuario ya tiene una colección de favoritos, devolvemos los datos
+      const favoritosData = querySnapshot.docs[0].data();
+      return favoritosData;
+    }
   } catch (error) {
-    console.error('Error al obtener favoritos:', error);
-    throw error; // Re-lanza el error para que pueda ser manejado en el nivel superior
+    console.error('Error al obtener o crear favoritos:', error);
+    throw error;
   }
 };
-export const toggleItemId =async(userId, itemId)=>{
+export const toggleFavoritos =async(userId, pokemonId)=>{
   const db = getFirestore(app);
   const favoritosCollectionRef = collection(db, 'favoritos');
 
@@ -57,28 +68,24 @@ export const toggleItemId =async(userId, itemId)=>{
     // El documento no existe, entonces lo creamos con el itemId
     await setDoc(doc(favoritosCollectionRef), {
       userId: userId,
-      itemIds: [itemId],
-      // Otros campos según tus necesidades
+      pokemonsIds: [pokemonId],
     });
   } else {
     // El documento existe, entonces lo actualizamos
-
     const favoritoDoc = querySnapshot.docs[0]; // Suponemos que solo hay un documento por usuario
-    const itemIdsActuales = favoritoDoc.data().itemIds || [];
+    const pokemonsIdsActuales = favoritoDoc.data().pokemonsIds || [];
 
-    if (itemIdsActuales.includes(itemId)) {
+    if (pokemonsIdsActuales.includes(pokemonId)) {
       // El itemId está presente, lo eliminamos
-      const itemIdsActualizados = itemIdsActuales.filter((id) => id !== itemId);
+      const pokemonsIdsActualizados = pokemonsIdsActuales.filter((id) => id !== pokemonId);
       await updateDoc(favoritoDoc.ref, {
-        itemIds: itemIdsActualizados,
-        // Otros campos según tus necesidades
+        pokemonsIds: pokemonsIdsActualizados,
       });
     } else {
       // El itemId no está presente, lo agregamos
-      const itemIdsActualizados = [...itemIdsActuales, itemId];
+      const pokemonsIdsActualizados = [...pokemonsIdsActuales, pokemonId];
       await updateDoc(favoritoDoc.ref, {
-        itemIds: itemIdsActualizados,
-        // Otros campos según tus necesidades
+        pokemonsIds: pokemonsIdsActualizados,
       });
     }
   }

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { PokemonContext } from '../context/PokemonContext'
 import { Loader } from '../components/Loader'
 import { authContext } from '../context/AuthContext'
-import {MostrarFavoritos, toggleItemId} from "../fireBase"
+import {MostrarFavoritos, toggleFavoritos} from "../fireBase"
 
 export const PokemonPage = () => {
   const { getPokemonId } = useContext(PokemonContext)
@@ -12,24 +12,26 @@ export const PokemonPage = () => {
   const [pokemon, setpokemon] = useState({})
   const [favorito, setFavorito] = useState(false)
   const {id} = useParams()
-  const favorites= async ()=>{
-    console.log(user)
+
+  const loadFavorites= async ()=>{
     const data = await MostrarFavoritos(user.uid)
-    const ids = data[0].itemIds
-    const encontrado = ids.includes(id)
-    if(encontrado)setFavorito(true)
+    const ids = data.pokemonsIds
+    if(ids){
+      const encontrado = ids.includes(id)
+      if(encontrado)setFavorito(true)
+    }
   }
   const fetchPokemon = async(id)=>{
     const data = await getPokemonId(id)
     setpokemon(data)
   }
- const cargar = async(id)=>{
+ const loadResources= async(id)=>{
+  if(user)await loadFavorites();
   await fetchPokemon(id)
-  await favorites()
   setloading(false)
  }
   useEffect(()=>{
-    cargar(id)
+    loadResources(id)
   },[id, user])
 
   return (
@@ -37,7 +39,6 @@ export const PokemonPage = () => {
     {loading ? (
       <Loader />
     ) : (
-   
       <>
         <div className='header-main-pokemon'>
           <div className="contenedor-pokemon">
@@ -80,9 +81,9 @@ export const PokemonPage = () => {
           <h1>Estadísticas </h1>
           {
             !favorito?(
-                <img onClick={()=>{toggleItemId(user.uid, id); setFavorito(true)}} width="24" height="24" src="https://img.icons8.com/ios/24/like--v1.png" alt="like--v1"/>
+                <img onClick={()=>{toggleFavoritos(user.uid, id); setFavorito(true)}} width="24" height="24" src="https://img.icons8.com/ios/24/like--v1.png" alt="like--v1"/>
             ):(
-              <img onClick={()=>{toggleItemId(user.uid, id); setFavorito(false)}} width="24" height="24" src="https://img.icons8.com/fluency/24/like.png" alt="like"/>
+              <img onClick={()=>{toggleFavoritos(user.uid, id); setFavorito(false)}} width="24" height="24" src="https://img.icons8.com/fluency/24/like.png" alt="like"/>
             )
           }
           

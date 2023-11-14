@@ -1,6 +1,9 @@
 .container-filter{
     display: flex;
     margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
 }
 .icon-filter{
     display: flex;
