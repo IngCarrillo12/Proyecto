@@ -2,20 +2,35 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { PokemonContext } from '../context/PokemonContext'
 import { Loader } from '../components/Loader'
+import { authContext } from '../context/AuthContext'
+import {MostrarFavoritos, toggleItemId} from "../fireBase"
+
 export const PokemonPage = () => {
   const { getPokemonId } = useContext(PokemonContext)
+  const { user } = useContext(authContext)
   const [loading, setloading] = useState(true)
   const [pokemon, setpokemon] = useState({})
+  const [favorito, setFavorito] = useState(false)
   const {id} = useParams()
-
+  const favorites= async ()=>{
+    console.log(user)
+    const data = await MostrarFavoritos(user.uid)
+    const ids = data[0].itemIds
+    const encontrado = ids.includes(id)
+    if(encontrado)setFavorito(true)
+  }
   const fetchPokemon = async(id)=>{
     const data = await getPokemonId(id)
     setpokemon(data)
-    setloading(false)
   }
+ const cargar = async(id)=>{
+  await fetchPokemon(id)
+  await favorites()
+  setloading(false)
+ }
   useEffect(()=>{
-    fetchPokemon(id)
-  },[id])
+    cargar(id)
+  },[id, user])
 
   return (
     <main className='container main-pokemon'>
@@ -61,7 +76,18 @@ export const PokemonPage = () => {
         </div>
 
         <div className='container-stats'>
-          <h1>Estadísticas</h1>
+          <div className='container-stats__title-favorite'>
+          <h1>Estadísticas </h1>
+          {
+            !favorito?(
+                <img onClick={()=>{toggleItemId(user.uid, id); setFavorito(true)}} width="24" height="24" src="https://img.icons8.com/ios/24/like--v1.png" alt="like--v1"/>
+            ):(
+              <img onClick={()=>{toggleItemId(user.uid, id); setFavorito(false)}} width="24" height="24" src="https://img.icons8.com/fluency/24/like.png" alt="like"/>
+            )
+          }
+          
+          </div>
+          
           <div className='stats'>
             <div className='stat-group'>
               <span>Hp</span>
@@ -136,6 +162,7 @@ export const PokemonPage = () => {
               </span>
             </div>
           </div>
+          <p onClick={()=>MostrarFavoritos(user.uid)}>Mostrar</p>
         </div>
       </>
     )}

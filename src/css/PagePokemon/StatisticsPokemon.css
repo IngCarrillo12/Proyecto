@@ -4,7 +4,15 @@
     gap: 50px;
     width: 55%;
 }
-
+.container-stats__title-favorite{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+}
+.container-stats__title-favorite img{
+    cursor: pointer;
+}
 .stats {
 	display: flex;
 	flex-direction: column;

@@ -5,3 +5,4 @@ export * from './Navigation'
 export * from './PokemonList'
 export * from  "./Login"
 export * from "./Register"
+export * from "./UserMenu"
