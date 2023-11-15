@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { PokemonContext } from '../context/PokemonContext'
 import { authContext } from '../context/AuthContext'
 import { UserMenu } from "./index"
-
+import logoApp from "../resources/logoApp.webp"
 export const Navigation = () => {
   const {onInputChange, valueSearch, onResetForm} = useContext(PokemonContext)
   const {user} = useContext(authContext)
@@ -21,7 +21,7 @@ export const Navigation = () => {
       <header >
         <div className="container header">
     <Link to={"/"} className="logo">
-        <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" alt="Logo Podedex" />
+        <img src={logoApp} alt="Logo Podedex" />
     </Link>
         <form className='form-search' onSubmit={onSearchSubmit}>
             <div className="form-group">

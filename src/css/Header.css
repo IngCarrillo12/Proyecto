@@ -1,5 +1,7 @@
 header{
     background-color: #ce2020;
+    border-bottom: 2px solid #000;
+    margin-bottom: 3rem;
 }
 .header{
     display: flex;
@@ -11,15 +13,18 @@ header{
     height: 125px;
 }
 .logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height:100%;
     width: 25%;
 }
 .logo img{
-    width: 150px;
+    width: 100%;
     transition: ease-in-out .7s;
 }
 .logo img:hover{
-    width: 200px;
+    width: 110%;
 }
 .form-search{
     display: flex;
