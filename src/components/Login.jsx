@@ -13,23 +13,14 @@ export const Login = () => {
     })
   }
   const handleGoogleLogin = async()=>{
-    try {
       await loginWithGoogle()
       navigate("/")
-    } catch (error) {
-      console.log(error.message)
-    }
     
   }
   const handleSubmit = async(e)=>{
     e.preventDefault()
-    try {
-      const resultLogin = await login(user.email, user.password)
-      if(resultLogin)navigate("/")
-    } catch (error) {
-      console.log(error.message)
-    }
-    
+    const resultLogin = await login(user.email, user.password)
+    if(resultLogin)navigate("/")   
   }
   return (
     <div className='container center'>
@@ -44,8 +35,6 @@ export const Login = () => {
         <label htmlFor="password">Password:</label>
         <input onChange={handleChange} type="password" name='password' className="input" placeholder="*******"/>
         </div>
-        <p className="page-link"><span className="page-link-label">Forgot Password?</span>
-        </p>
         <button className="form-btn" type='submit'>Log in</button>
         </form>
       <p className="sign-up-label">

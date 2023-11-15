@@ -2,11 +2,13 @@ import React, { useContext, useState } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { PokemonContext } from '../context/PokemonContext'
 import { authContext } from '../context/AuthContext'
-import { UserMenu } from "./index"
+import { UserMenu} from "./index"
+import { ModalAvatares } from "./index"
 import logoApp from "../resources/logoApp.webp"
 export const Navigation = () => {
   const {onInputChange, valueSearch, onResetForm} = useContext(PokemonContext)
-  const {user} = useContext(authContext)
+  const [changeAvatar, setChangeAvatar] = useState(false)
+  const {user} = useContext(authContext) 
   const [userMenu, setUserMenu] = useState(false)
   const navigate = useNavigate()
   const onSearchSubmit = (e)=>{
@@ -15,7 +17,6 @@ export const Navigation = () => {
       state: valueSearch
     }),onResetForm()) 
   }
-  
   return (
     <>
       <header >
@@ -51,15 +52,17 @@ export const Navigation = () => {
               <img width="50" onClick={()=>setUserMenu(!userMenu)} height="50" src={user.photoURL} alt="user-male-circle"/>
               {
             userMenu&&(
-              <UserMenu setUserMenu={setUserMenu} name={user.displayName} image={user.photoURL} email={user.email} />
+              <UserMenu setChangeAvatar={setChangeAvatar} setUserMenu={setUserMenu} name={user.displayName} image={user.photoURL} email={user.email} />
             )
           }
           </div>
           )
           }
-          
-          
-          
+          {
+            changeAvatar&&(
+              <ModalAvatares setChangeAvatar={setChangeAvatar}/>
+            )
+          }
           </div>
     </header>
       <Outlet/>

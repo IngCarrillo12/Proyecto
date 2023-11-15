@@ -101,19 +101,28 @@ header{
     justify-content: center;
 }
 .userAuth img{
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
+    border: 2px solid #000;
+    padding: .5rem;
+    background-color: #fff;
 }
 .userMenu_group{
     display: flex;
     align-items: center;
     gap: .5rem;
 }
+.userMenu_group img{
+    width: 80px;
+    height: 80px;
+}
 .userMenu{
     display: flex;
     flex-direction: column;
     gap: .7rem;
     position: absolute;
-    top: 3rem;
+    top: 4.5rem;
     right:-10rem;
     padding: 1rem;
     border: 2px solid var(--color-primary);
@@ -133,18 +142,47 @@ header{
     text-decoration: none;
 }
 @media (max-width:768px){
-    header{
-        flex-direction: column;
+    .header{
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    height: 170px;
+    max-height: 400px;
+    gap: .5rem;
     }
-    .logo{
-        text-align: center;
-        margin-bottom: 1.5rem;
+    .form-group {
+        padding: .5rem 1rem;
     }
-    .input-search{
-        font-family: inherit;
-        font-size: 1rem;
-        border: none;
-        outline: none;
-        width: 150px;
+    .form-search{
+        justify-content: center;
+        width: 90%;
+        gap: .5rem;
+        padding: 0;
+    }
+    .userAuth{
+        position: absolute;
+        right: 8px;
+        top: 8px;
+    }
+    .logo {
+        height: 100%;
+        width: 50%;
+    }
+    .userMenu{
+            top: 8rem;
+            right:0rem;
+        }
+        .container-btnAuth {
+            width: 100%;
+            justify-content: center;
+            height: 40px;
+        }
+        .btn{
+            padding: .7rem 1rem;
+        }
+}
+@media (max-width:1050px){
+    .header{
+        width: 90%;
     }
 }

@@ -57,10 +57,8 @@ export const MostrarFavoritos = async (id) => {
 export const toggleFavoritos =async(userId, pokemonId)=>{
   const db = getFirestore(app);
   const favoritosCollectionRef = collection(db, 'favoritos');
-
   // Crear una consulta para verificar si el documento ya existe para el usuario actual
   const favoritosQuery = query(favoritosCollectionRef, where('userId', '==', userId));
-
   // Obtener los documentos que cumplen con la consulta
   const querySnapshot = await getDocs(favoritosQuery);
 

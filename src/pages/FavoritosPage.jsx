@@ -11,7 +11,6 @@ export const FavoritosPage = () => {
     const loadFavorite = async()=>{
         const data = await MostrarFavoritos(user.uid)
         const ids = await data.pokemonsIds
-  
         if(ids){
             const pokemonsFavorites = globalPokemons.filter(pokemon=> ids.includes(""+pokemon.id))
             setfavorites(pokemonsFavorites)
@@ -25,17 +24,29 @@ export const FavoritosPage = () => {
     
   return (
     <div className="container">
-    {
-     loading?(
-    <Loader/>
+  {
+    loading?(
+      <Loader/>
     ):(
-        <div className="card-list-pokemon">
+        <>
         {
+          favorites.length===0?(
+            <div >
+            <h1>Aun no tienes pokemones favoritos</h1>
+            </div>
+          ):(
+            <div className="card-list-pokemon">
+            {
             favorites.map(pokemon => <CardPokemon pokemon={pokemon} key={pokemon.id} />)
+            }
+             </div>
+            
+          )
+           
         }
-        </div> 
+       </>
     )
-    }
+  }
    
     
       
